@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Евгений и Анастасия | 11.07.26</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@100;300;400&display=swap" rel="stylesheet">
+    <style>
+	/* КОНВЕРТ - ОСНОВНЫЕ СТИЛИ */
+.envelope-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-beige);
+    background: linear-gradient(135deg, #FAF9F6 0%, #F5F2E9 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.envelope-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.envelope-container {
+    text-align: center;
+    max-width: 500px;
+    padding: 20px;
+}
+
+/* ЗАКРЫТЫЙ КОНВЕРТ */
+.envelope-closed {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.envelope-closed:hover {
+    transform: scale(1.05);
+}
+
+.envelope-front {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Верхний клапан конверта */
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 100px solid var(--color-olive-dark);
+    border-top: 0;
+    z-index: 2;
+    transform-origin: top center;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+	filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
+}
+
+/* Тело конверта */
+.body {
+    position: absolute;
+	 top: 100px; /* Чуть перекрываем треугольник */
+    left: 20px;
+    bottom: 0;
+    left: 0;
+    width: 100%;;
+    height: 140px;
+    background: var(--color-olive);
+    border-radius: 0 0 8px 8px;
+    z-index: 1;
+    box-shadow: 0 5px 20px rgba(107, 142, 35, 0.3);
+}
+
+/* Сердечко */
+.heart {
+    position: absolute;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    z-index: 2;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    animation: heartbeat 1.5s infinite ease-in-out;
+}
+
+/* Адрес на конверте */
+.address {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    z-index: 2;
+    font-family: 'Cormorant Garamond', serif;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	
+}
+
+.to {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    opacity: 0.95;
+}
+
+.names {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.date {
+    font-size: 1.4rem;
+    opacity: 0.95;
+}
+
+/* ОТКРЫТЫЙ КОНВЕРТ */
+.envelope-opened {
+    display: none;
+    position: relative;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.envelope.open .envelope-closed {
+    display: none;
+}
+
+.envelope.open .envelope-opened {
+    display: block;
+}
+
+/* ПИСЬМО */
+.letter {
+    background: var(--color-beige);
+    border-radius: 10px;
+    padding: 30px 25px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(107, 142, 35, 0.2);
+    animation: slideUp 0.8s ease-out forwards;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.letter-content {
+    text-align: center;
+}
+
+.letter-opening {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--color-olive-dark);
+    margin-bottom: 20px;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.letter p {
+    font-size: 1.1rem;
+    color: var(--color-black);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.letter-closing {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--color-olive);
+    margin: 25px 0 30px;
+    line-height: 1.5;
+}
+        /* ОСНОВНЫЕ СТИЛИ И ЦВЕТА */
+        :root {
+            --color-olive: #6B8E23;
+            --color-olive-light: #9AB973;
+            --color-olive-dark: #556B2F;
+            --color-beige: #FAF9F6;
+            --color-gray: #8C8C8C;
+            --color-white: #FFFFFF;
+            --color-black: #1a1a1a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            background-color: var(--color-beige);
+            color: var(--color-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+			opacity: 0;
+    animation: fadeInMain 0.8s ease 0.3s forwards;
+        }
+		@keyframes fadeInMain {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        section { padding: 100px 0; position: relative; }
+		/* Добавьте в стили для адаптации на мобильных */
+@media (max-width: 768px) {
+    .hero-date {
+        font-size: 3rem;
+        letter-spacing: 5px;
+    }
+}
+        
+        /* КНОПКА ОЛИВКОВАЯ */
+        .btn {
+            display: inline-block;
+            padding: 18px 45px;
+            background-color: transparent;
+            border: 1px solid var(--color-olive);
+            color: var(--color-olive);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--color-olive);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+        .btn:hover::before { left: 0; }
+        .btn:hover { color: var(--color-beige); }
+		
+
+
+
+/* КНОПКА */
+.open-invitation-btn {
+    background: var(--color-olive);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+.open-invitation-btn:hover {
+    background: var(--color-olive-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(107, 142, 35, 0.3);
+}
+
+/* ИНСТРУКЦИЯ */
+.instruction {
+    color: var(--color-olive);
+    font-size: 1.1rem;
+    margin-top: 25px;
+    font-style: italic;
+    animation: fadeInOut 2s infinite;
+    opacity: 0.8;
+}
+
+/* АНИМАЦИИ */
+@keyframes heartbeat {
+    0%, 100% { 
+        transform: translateX(-50%) scale(1); 
+    }
+    50% { 
+        transform: translateX(-50%) scale(1.15); 
+    }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { 
+        opacity: 0.6; 
+    }
+    50% { 
+        opacity: 1; 
+    }
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(50px); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+}
+
+/* Класс для открытого конверта - для анимации клапана */
+.envelope.open .flap {
+    transform: rotateX(180deg);
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 768px) {
+    .envelope-closed {
+        width: 250px;
+        height: 170px;
+    }
+    
+    .flap {
+        border-left: 125px solid transparent;
+        border-right: 125px solid transparent;
+        border-bottom: 85px solid var(--color-olive-dark);
+    }
+    
+    .body {
+        width: 250px;
+        height: 120px;
+    }
+    
+    .heart {
+        top: 50px;
+        font-size: 2.5rem;
+    }
+    
+    .names {
+        font-size: 1.6rem;
+    }
+    
+    .date {
+        font-size: 1.2rem;
+    }
+    
+    .letter {
+        padding: 25px 20px;
+        max-width: 280px;
+    }
+    
+    .letter-opening {
+        font-size: 1.2rem;
+    }
+    
+    .instruction {
+        font-size: 1rem;
+    }
+}
+        
+        /* ГЛАВНАЯ СЕКЦИЯ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: var(--color-beige);
+        }
+        .hero-content { max-width: 900px; }
+        .hero-suptitle {
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--color-olive);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        .hero-date {
+            font-size: 5.5rem;
+            letter-spacing: 15px;
+            margin: 40px 0;
+            color: var(--color-black);
+            font-weight: 100;
+        }
+        .hero-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            line-height: 1.4;
+            color: var(--color-gray);
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        .hero-names {
+            font-size: 4.5rem;
+            letter-spacing: 5px;
+            color: var(--color-black);
+            margin-top: 80px;
+            line-height: 1.1;
+        }
+        
+        /* ГАЛЕРЕЯ ФОТОГРАФИЙ */
+        .gallery-section {
+            background-color: rgba(107, 142, 35, 0.03);
+            text-align: center;
+        }
+        .gallery-title {
+            font-size: 3.5rem;
+            margin-bottom: 60px;
+            color: var(--color-black);
+            font-weight: 300;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 10000px;
+            margin: 0 auto;
+        }
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.4s ease;
+            height: 350px;
+        }
+        .gallery-item:hover { transform: translateY(-10px); }
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* КАЛЕНДАРЬ */
+        .calendar { text-align: center; }
+        .calendar h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--color-black);
+            font-weight: 300;
+        }
+
+		
+        .calendar-month {
+            font-size: 2.5rem;
+            color: var(--color-olive);
+            margin-bottom: 40px;
+            letter-spacing: 5px;
+        }
+        .calendar-table {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 50px;
+            border-collapse: collapse;
+            font-size: 1.2rem;
+        }
+        .calendar-table th {
+            padding: 15px 5px;
+            color: var(--color-gray);
+            font-weight: 400;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .calendar-table td {
+            padding: 20px 5px;
+            width: calc(100% / 7);
+        }
+        .calendar-table .wedding-day {
+            background-color: var(--color-olive);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            margin: 0 auto;
+        }
+        .highlight-date {
+            font-size: 2rem;
+            color: var(--color-olive);
+            margin: 40px 0;
+            letter-spacing: 2px;
+			font-family: 'Montserrat', sans-serif;
+			
+        }
+        
+        /* ЛОКАЦИЯ */
+        .location {
+            background-color: rgba(107, 142, 35, 0.03);
+            text-align: center;
+			margin: 0;           /* Убираем отступы браузера */
+    padding: 0;          /* Убираем внутренние отступы */
+    min-height: 100vh;   /* Минимальная высота = весь экран */
+        }
+        .location h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--color-black);
+            font-weight: 300;
+        }
+        .location h3 {
+            font-size: 2rem;
+            color: var(--color-olive);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        .location-address {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: var(--color-gray);
+        }
+        .location-note {
+            font-size: 1.1rem;
+            color: var(--color-olive);
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+        
+      
+   /* ЭЛЕГАНТНЫЙ ТАЙМИНГ */
+.elegant-timing {
+    padding: 120px 0;
+    background: linear-gradient(to bottom, #FAF9F6 0%, #F5F2E9 100%);
+    position: relative;
+}
+
+.timing-header-elegant {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.timing-header-elegant h2 {
+    font-size: 3.5rem;
+    color: var(--color-black);
+    font-weight: 300;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.timing-date {
+    font-size: 1.5rem;
+    color: var(--color-olive);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+.header-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+.divider-line {
+    flex-grow: 1;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        var(--color-olive-light), 
+        transparent
+    );
+}
+
+.divider-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-olive);
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+/* ТАЙМЛАЙН */
+.timeline-elegant {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline-elegant::before {
+    content: '';
+    position: absolute;
+    left: 85px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        var(--color-olive-light) 10%,
+        var(--color-olive-light) 90%,
+        transparent 100%
+    );
+    opacity: 0.3;
+}
+
+.timeline-item-elegant {
+    display: flex;
+    margin-bottom: 60px;
+    position: relative;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.timeline-item-elegant:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item-elegant:nth-child(2) { animation-delay: 0.2s; }
+.timeline-item-elegant:nth-child(3) { animation-delay: 0.3s; }
+.timeline-item-elegant:nth-child(4) { animation-delay: 0.4s; }
+.timeline-item-elegant:nth-child(5) { animation-delay: 0.5s; }
+.timeline-item-elegant:nth-child(6) { animation-delay: 0.6s; }
+
+/* КРУГИ С ВРЕМЕНЕМ */
+.time-circle {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border: 2px solid var(--color-olive-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 40px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 8px 25px rgba(86, 107, 47, 0.1);
+    transition: all 0.3s ease;
+}
+
+.time-circle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(86, 107, 47, 0.15);
+}
+
+.time-number {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--color-olive-dark);
+    letter-spacing: 1px;
+}
+
+
+.circle-highlight .time-number {
+    color: white;
+}
+
+
+.circle-celebration .time-number {
+    color: white;
+    font-weight: 500;
+}
+
+/* КАРТОЧКИ СОБЫТИЙ */
+.timeline-content-elegant {
+    flex-grow: 1;
+    padding-top: 20px;
+}
+
+.timeline-card-elegant {
+    background: white;
+    padding: 35px 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid var(--color-olive-light);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-card-elegant::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(107, 142, 35, 0.02) 0%, 
+        rgba(154, 185, 115, 0.05) 100%
+    );
+    z-index: 1;
+}
+
+.timeline-card-elegant:hover {
+    transform: translateX(10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.card-highlight {
+    border-left-color: var(--color-olive);
+    background: linear-gradient(to right, white 0%, rgba(107, 142, 35, 0.03) 100%);
+}
+
+.card-celebration {
+    border-left-color: var(--color-olive-dark);
+    background: linear-gradient(to right, white 0%, rgba(86, 107, 47, 0.03) 100%);
+}
+
+.event-title {
+    font-size: 1.6rem;
+    color: var(--color-black);
+    font-weight: 400;
+    margin-bottom: 15px;
+    font-family: 'Cormorant Garamond', serif;
+    position: relative;
+    z-index: 2;
+    line-height: 1.4;
+}
+
+.event-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-gray);
+    font-size: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+
+.icon-small {
+    width: 18px;
+    height: 18px;
+    color: var(--color-olive);
+    stroke-width: 2.5;
+}
+
+.detail-text {
+    font-style: italic;
+    letter-spacing: 0.5px;
+}
+
+/* ПРИМЕЧАНИЕ ВНИЗУ */
+.timing-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 80px;
+    padding: 25px;
+    background: rgba(107, 142, 35, 0.05);
+    border-radius: 12px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px dashed var(--color-olive-light);
+}
+
+.note-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--color-olive);
+    flex-shrink: 0;
+}
+
+.timing-note p {
+    color: var(--color-olive-dark);
+    font-size: 1rem;
+    margin: 0;
+    font-style: italic;
+}
+
+/* АНИМАЦИИ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 768px) {
+    .elegant-timing {
+        padding: 80px 0;
+    }
+    
+    .timing-header-elegant h2 {
+        font-size: 2.5rem;
+    }
+    
+    .timeline-elegant::before {
+        left: 60px;
+    }
+    
+    .time-circle {
+        width: 80px;
+        height: 80px;
+        margin-right: 25px;
+    }
+    
+    .time-number {
+        font-size: 1.2rem;
+    }
+    
+    .timeline-card-elegant {
+        padding: 25px 30px;
+    }
+    
+    .event-title {
+        font-size: 1.4rem;
+    }
+    
+    .timeline-item-elegant {
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .timeline-elegant::before {
+        left: 40px;
+    }
+    
+    .time-circle {
+        width: 70px;
+        height: 70px;
+        margin-right: 20px;
+    }
+    
+    .timeline-card-elegant {
+        padding: 20px 25px;
+    }
+    
+    .event-title {
+        font-size: 1.2rem;
+    }
+    
+    .event-details {
+        font-size: 0.9rem;
+    }
+    
+    .timing-note {
+        padding: 20px;
+        text-align: center;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+        
+        
+        /* ТАЙМЕР */
+        .countdown-section {
+            background-color: rgba(107, 142, 35, 0.05);
+            text-align: center;
+			position: relative;
+  
+        }
+		
+		
+.requests-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+     background-color: rgba(107, 142, 35, 0.05);
+
+}
+		
+        .countdown-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--color-black);
+            font-weight: 300;
+        }
+        .countdown-container {
+		 font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+			  color: var(--color-olive-dark);
+			     text-transform: uppercase;
+        }
+        .countdown-item {
+            text-align: center;
+            min-width: 150px;
+        }
+        .countdown-number {
+            font-size: 4rem;
+            color: var(--color-olive);
+            font-weight: 100;
+            line-height: 1;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .countdown-label {
+            font-size: 1rem;
+            color: var(--color-gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        /* АНКЕТА ГОСТЯ */
+        .rsvp { text-align: center; }
+        .rsvp h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--color-black);
+            font-weight: 300;
+        }
+        .rsvp-date {
+            font-size: 2rem;
+            color: var(--color-olive);
+            margin-bottom: 40px;
+        }
+        .rsvp-deadline {
+            font-size: 1.3rem;
+            color: var(--color-gray);
+            margin-bottom: 50px;
+        }
+        
+        /* ФУТЕР */
+        .footer {
+            background-color: var(--color-black);
+            color: var(--color-beige);
+            text-align: center;
+            padding: 80px 0;
+        }
+        .footer-names {
+            font-size: 2rem;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+			font-family: 'Montserrat', sans-serif;
+        }
+        .footer-text {
+            font-size: 1.2rem;
+            color: rgba(250, 249, 246, 0.7);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+			font-family: 'Montserrat', sans-serif;
+        }
+		 .polaroid-wrapper {
+    display: flex;
+    gap: 150px; /* Отступ между фото */
+    align-items: center; /* Выравнивание по центру */
+  }
+		.polaroid {
+    width: 550px;
+    background-color: white;
+    padding: 15px 15px 30px 15px; /* Отступы, нижний больше */
+    border: 1px solid #ccc;
+    box-shadow: 5px 5px 10px #aaa; /* Тень */
+    text-align: center;
+	font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            line-height: 1.4;
+            color: var(--color-gray);
+  }
+   .polaroid img {
+    width: 100%;
+    height: auto;
+  }
+  .p1 { transform: rotate(-5deg); }
+  .p2 { transform: rotate(5deg); }
+  
+  
+  /* СТИЛИ ДЛЯ СЕКЦИИ ПРОСЬБ */
+.requests-section {
+    padding: 120px 0;
+    background: linear-gradient(135deg, #FAF9F6 0%, #F5F2E9 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.requests-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-olive-light), transparent);
+}
+
+.requests-header {
+    text-align: center;
+    margin-bottom: 80px;
+    position: relative;
+}
+
+.requests-header h2 {
+    font-size: 4rem;
+    color: var(--color-olive-dark);
+    margin-bottom: 20px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.divider {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-olive-light), var(--color-olive));
+    margin: 0 auto 25px;
+    position: relative;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--color-olive);
+    border-radius: 50%;
+    top: -3px;
+}
+
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.subtitle {
+    font-size: 1.3rem;
+    color: var(--color-olive);
+    font-style: italic;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* СЕТКА ПРОСЬБ */
+.requests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 80px;
+    position: relative;
+}
+
+.request-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 35px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(86, 107, 47, 0.08);
+    border: 1px solid rgba(107, 142, 35, 0.15);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    overflow: hidden;
+}
+
+.request-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--color-olive-light), var(--color-olive));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.request-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(86, 107, 47, 0.15);
+    border-color: var(--color-olive-light);
+}
+
+.request-card:hover::before {
+    opacity: 1;
+}
+
+.request-number {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-size: 5rem;
+    font-weight: 100;
+    color: rgba(107, 142, 35, 0.08);
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1;
+}
+
+.request-content {
+    position: relative;
+    z-index: 2;
+}
+
+.request-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, rgba(107, 142, 35, 0.1) 0%, rgba(154, 185, 115, 0.2) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    border: 1px solid rgba(107, 142, 35, 0.2);
+}
+
+.request-icon svg {
+    width: 32px;
+    height: 32px;
+    color: var(--color-olive);
+}
+
+.request-title {
+    font-size: 1.8rem;
+    color: var(--color-olive-dark);
+    margin-bottom: 25px;
+    font-weight: 400;
+    font-family: 'Cormorant Garamond', serif;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.request-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 1px;
+    background: var(--color-olive-light);
+}
+
+.request-text {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.7;
+}
+
+.request-text p {
+    margin-bottom: 20px;
+}
+
+.highlight {
+    color: var(--color-olive-dark);
+    font-weight: 500;
+    position: relative;
+    padding: 0 2px;
+}
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(107, 142, 35, 0.2);
+    z-index: -1;
+}
+
+.emphasis {
+    font-style: italic;
+    color: var(--color-olive);
+    padding-left: 20px;
+    position: relative;
+}
+
+.emphasis::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-olive-light);
+}
+
+.alternative {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(107, 142, 35, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border-left: 3px solid var(--color-olive);
+}
+
+.arrow {
+    font-size: 1.8rem;
+    color: var(--color-olive);
+    font-weight: 300;
+}
+
+.alternative-text {
+    font-size: 1.2rem;
+    color: var(--color-olive-dark);
+    font-weight: 500;
+    flex: 1;
+}
+
+.quote {
+    background: linear-gradient(135deg, rgba(250, 249, 246, 0.8), rgba(245, 242, 233, 0.9));
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 25px;
+    position: relative;
+    border: 1px solid rgba(107, 142, 35, 0.1);
+}
+
+.quote-mark {
+    position: absolute;
+    top: -15px;
+    left: 25px;
+    font-size: 4rem;
+    color: var(--color-olive-light);
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1;
+}
+
+.quote p {
+    font-size: 1.2rem;
+    color: var(--color-olive-dark);
+    font-style: italic;
+    margin: 0;
+    padding-left: 10px;
+}
+
+/* ФУТЕР СЕКЦИИ */
+.requests-footer {
+    text-align: center;
+    padding-top: 60px;
+    border-top: 1px solid rgba(107, 142, 35, 0.1);
+    position: relative;
+}
+
+.olive-branch {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 30px;
+    color: var(--color-olive-light);
+    opacity: 0.7;
+}
+
+.olive-branch svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(45deg);
+}
+
+.gratitude {
+    font-size: 1.5rem;
+    color: var(--color-olive-dark);
+    margin-bottom: 15px;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.signature {
+    font-size: 1.2rem;
+    color: var(--color-gray);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 992px) {
+    .requests-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .requests-section {
+        padding: 80px 0;
+    }
+    
+    .requests-header h2 {
+        font-size: 3rem;
+    }
+    
+    .requests-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        margin-bottom: 60px;
+    }
+    
+    .request-card {
+        padding: 30px 25px;
+    }
+    
+    .request-number {
+        font-size: 4rem;
+        top: 20px;
+        right: 20px;
+    }
+    
+    .request-title {
+        font-size: 1.6rem;
+    }
+    
+    .alternative {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .gratitude {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .requests-header h2 {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .request-card {
+        padding: 25px 20px;
+    }
+}
+ 
+        
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            section { padding: 70px 0; }
+            .hero-suptitle { font-size: 0.9rem; letter-spacing: 5px; }
+            .hero-date { font-size: 3.5rem; letter-spacing: 10px; }
+            .hero-quote { font-size: 1.4rem; margin: 40px auto; }
+            .hero-names { font-size: 3rem; }
+            .gallery-title, .calendar h2, .location h2, .timing h2, .rsvp h2 { font-size: 2.5rem; }
+            .calendar-month { font-size: 2rem; }
+            .gallery-grid { grid-template-columns: 1fr; gap: 20px; }
+            .gallery-item { height: 300px; }
+            .highlight-date { font-size: 2.2rem; }
+            .countdown-number { font-size: 2.8rem; }
+            .countdown-item { min-width: 110px; }
+            .btn { padding: 15px 35px; }
+        }
+    </style>
+</head>
+<body>
+<!-- ЗАМЕНИТЕ ВЕСЬ КОНВЕРТ НА ЭТОТ КОД -->
+<div id="envelope-overlay" class="envelope-overlay">
+    <div class="envelope-container">
+        <div class="envelope" id="envelope">
+            <!-- Конверт закрытый -->
+            <div class="envelope-closed">
+                <div class="envelope-front">
+                    <div class="flap"></div>
+                    <div class="body"></div>
+                    <div class="heart">❤</div>
+                    <div class="address">
+                        <div class="to">Дорогим гостям</div>
+                        <div class="names">Евгений и Анастасия</div>
+                        <div class="date">11.07.2026 — 12.07.2026</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Конверт открытый -->
+            <div class="envelope-opened">
+                <div class="letter">
+                    <div class="letter-content">
+                        <p class="letter-opening">Дорогие друзья и родные,</p>
+                        <p>Приглашаем вас разделить с нами самый важный день в нашей жизни!</p>
+                        <p class="letter-closing">С любовью,<br>Евгений и Анастасия</p>
+                        <button class="open-invitation-btn" id="openInvitation">
+                            Открыть приглашение
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</div>
+    <!-- СЕКЦИЯ 1: ГЛАВНАЯ -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-suptitle">Wedding day</div>
+            <div class="hero-date">11.07.26</div>
+			<div class="polaroid-wrapper">
+			<div class="polaroid p1">
+  <img src="photo_5451892908882595873_y.jpg" alt="Описание">
+  <p>Интересно, кто будет моим мужем, когда я вырасту?</p>
+</div>
+<div class="polaroid p2">
+  <img src="photo_5451892908882595914_x.jpg" alt="Описание">
+  <p>Им буду я.</p>
+</div> 
+</div>
+            <div class="hero-names serif">
+		    <p>ЕВГЕНИЙ<br>И АНАСТАСИЯ</p>
+			</div>
+        
+		 </section>
+ 
+
+    <!-- СЕКЦИЯ 2: ГАЛЕРЕЯ ВАШИХ ФОТО -->
+    <section class="gallery-section">
+        <div class="container">
+          
+            <div class="gallery-grid">
+			  <div class="gallery-item">
+                    <img src="photo_5402603129754292163_y.jpg" alt="Наша фотография 2" class="gallery-img"
+                         onerror="this.src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                </div>
+                <div class="gallery-item">
+                    <img src="photo_5402603129754292161_y.jpg" alt="Наша фотография 1" class="gallery-img" 
+                         onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                </div>
+              
+                <div class="gallery-item">
+                    <img src="photo_5404854929567976224_y.jpg" alt="Наша фотография 3" class="gallery-img"
+                         onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ 3: КАЛЕНДАРЬ -->
+    <section class="calendar">
+        <div class="container">
+            <h2 class="serif">МЫ ЖДЁМ ВАС</h2>
+		
+        </div>
+            <div class="calendar-month serif">Июль 2026</div>
+			
+			
+			
+            <table class="calendar-table">
+                <thead>
+                    <tr><th>ПН</th><th>ВТ</th><th>СР</th><th>ЧТ</th><th>ПТ</th><th>СБ</th><th>ВС</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td class="wedding-day">11</td><td class="wedding-day">12</td></tr>
+                    <tr><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr>
+                    <tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr>
+                    <tr><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        
+			<p>Праздник, который не умещается в один день!</p>
+            <div class="highlight-date serif">11.07.26 - 12.07.26</div>
+          
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ 4: ЛОКАЦИЯ -->
+    <section class="location">
+        <div class="container">
+            <h2 class="serif">Локация</h2>
+            <h3 class="serif">Агроусадьба "Родны кут"</h3>
+			 <div class="map-wrapper">
+            <!-- Карта Google Maps -->
+           
+                
+				<iframe src="https://yandex.by/map-widget/v1/?ll=26.444240%2C54.519782&mode=search&oid=8305253990&ol=biz&utm_source=share&z=14.16" width="1000" height="600" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+           
+        </div>
+        
+        <div class="location-details">
+            <p class="location-address">
+                Гродненская область, д. Войниденяты, д.26.<br>
+               
+            </p>
+            <p class="location-note">* Сбор гостей - 14:00</p>
+            <a href="https://yandex.by/maps/-/CLthFK1F" class="btn">Как добраться</a>
+            <br>
+			
+            <i class="fas fa-external-link-alt"></i> 
+        </a>
+    </div>
+</section>
+           
+        </div>
+    </section>
+
+   <!-- В СЕКЦИИ ТАЙМИНГА (замените существующий код) -->
+<section class="elegant-timing">
+    <div class="container">
+        <div class="timing-header-elegant">
+            <h2 class="serif">Тайминг первого дня</h2>
+            <div class="timing-date">11 июля, суббота</div>
+            <div class="header-divider">
+                <div class="divider-dot"></div>
+                <div class="divider-line"></div>
+                <div class="divider-dot"></div>
+            </div>
+        </div>
+
+        <div class="timeline-elegant">
+            <!-- Пункт 1 -->
+            <div class="timeline-item-elegant">
+                <div class="time-circle">
+                    <span class="time-number">13:00</span>
+                </div>
+                <div class="timeline-content-elegant">
+                    <div class="timeline-card-elegant">
+                        <h3 class="event-title">Венчание в Костёле Святого Михаила</h3>
+                      <div class="event-details">
+                            <svg class="icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                            <span class="detail-text">Духовное таинство венчания</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пункт 2 -->
+            <div class="timeline-item-elegant">
+                <div class="time-circle">
+                    <span class="time-number">14:00</span>
+                </div>
+                <div class="timeline-content-elegant">
+                    <div class="timeline-card-elegant">
+                        <h3 class="event-title">Сбор гостей, отъезд в усадьбу</h3>
+                        <div class="event-details">
+                            <svg class="icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                            <span class="detail-text">Трансфер к месту празднования</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пункт 3 -->
+            <div class="timeline-item-elegant">
+                <div class="time-circle">
+                    <span class="time-number">15:00</span>
+                </div>
+                <div class="timeline-content-elegant">
+                    <div class="timeline-card-elegant">
+                        <h3 class="event-title">Фуршет</h3>
+                       <div class="event-details">
+                            <svg class="icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                            <span class="detail-text">Лёгкие закуски и напитки</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пункт 4 -->
+            <div class="timeline-item-elegant">
+                <div class="time-circle">
+                    <span class="time-number">16:00</span>
+                </div>
+                <div class="timeline-content-elegant">
+                    <div class="timeline-card-elegant">
+                        <h3 class="event-title">Торжественная церемония бракосочетания</h3>
+                       <div class="event-details">
+                            <svg class="icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                            <span class="detail-text">Главное событие дня</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пункт 5 -->
+            <div class="timeline-item-elegant">
+                <div class="time-circle">
+                    <span class="time-number">17:00</span>
+                </div>
+                <div class="timeline-content-elegant">
+                    <div class="timeline-card-elegant">
+                        <h3 class="event-title">Фотосессия с гостями</h3>
+                       <div class="event-details">
+                            <svg class="icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                            <span class="detail-text">Памятные моменты</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пункт 6 -->
+            <div class="timeline-item-elegant">
+                <div class="time-circle">
+                    <span class="time-number">18:00</span>
+                </div>
+                <div class="timeline-content-elegant">
+                    <div class="timeline-card-elegant">
+                        <h3 class="event-title">Начало торжества</h3>
+                       <div class="event-details">
+                            <svg class="icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                            <span class="detail-text">Праздничный банкет и танцы</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     
+    </div>
+
+</section>
+
+    <!-- СЕКЦИЯ 6: ТАЙМЕР -->
+	<section class="requests-section">
+   
+    </div>
+        <div class="countdown-container">
+            <h1 class="serif">До нашей свадьбы осталось</h1>
+            <div class="countdown-container">
+                <div class="countdown-item"><div class="countdown-number" id="days">167</div><div class="countdown-label">Дней</div></div>
+                <div class="countdown-item"><div class="countdown-number" id="hours">05</div><div class="countdown-label">Часов</div></div>
+                <div class="countdown-item"><div class="countdown-number" id="minutes">56</div><div class="countdown-label">Минут</div></div>
+                <div class="countdown-item"><div class="countdown-number" id="seconds">58</div><div class="countdown-label">Секунд</div></div>
+            </div>
+        </div>
+		
+    </section>
+
+	
+<!-- СЕКЦИЯ: НАШИ ПРОСЬБЫ К ГОСТЯМ -->
+<section class="requests-section">
+    <div class="container">
+        <div class="requests-header">
+            <h2 class="serif">Небольшие просьбы</h2>
+            <div class="divider"></div>
+            <p class="subtitle">Чтобы день был идеальным для всех</p>
+        </div>
+        
+        <div class="requests-grid">
+            <!-- ПРОСЬБА 1 -->
+            <div class="request-card">
+                <div class="request-number">01</div>
+                <div class="request-content">
+                    <div class="request-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 class="request-title">Только взрослые</h3>
+                    <div class="request-text">
+                        <p>Мы мечтали об <span class="highlight">элегантном, романтическом вечере</span>, где каждый гость сможет полностью расслабиться и насладиться моментом.</p>
+                        <p>Поэтому наш праздник — <span class="highlight">только для взрослых</span>. Если есть возможность, оставьте детей под присмотром и погрузитесь в мир романтики вместе с нами.</p>
+                        <p class="emphasis">Мы уверены, что вы прекрасно проведете время и будете наслаждаться днем без лишних забот.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ПРОСЬБА 2 -->
+            <div class="request-card">
+                <div class="request-number">02</div>
+                <div class="request-content">
+                    <div class="request-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="request-title">Букету — альтернатива</h3>
+                    <div class="request-text">
+                        <p>Цветы, безусловно, прекрасны, но мы хотели бы предложить другую идею:</p>
+                        <div class="alternative">
+                            <span class="arrow">→</span>
+                            <span class="alternative-text">Вместо букета — бутылочка алкоголя на ваш вкус!</span>
+                        </div>
+                        <p>Это станет <span class="highlight">оригинальным вкладом</span> в нашу семейную коллекцию и поможет сделать праздничный бар еще интереснее. Выбирайте то, что нравится именно вам — мы будем рады любому выбору!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ПРОСЬБА 3 -->
+           
+        </div>
+        <div class="requests-footer">
+            <div class="olive-branch">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M4.93 4.93l14.14 14.14M2 12h20M4.93 19.07l14.14-14.14"></path>
+                </svg>
+            </div>
+            <p class="gratitude">Благодарим за понимание и с нетерпением ждем встречи!</p>
+        
+        </div>
+    
+</section>
+    <!-- СЕКЦИЯ 7: АНКЕТА -->
+    <section class="rsvp" id="rsvp">
+        <div class="container">
+            <h2 class="serif">Анкета гостя</h2>
+        
+            <p class="rsvp-deadline">
+                Пожалуйста, подтвердите своё присутствие на мероприятии до:<br>
+                <strong>16/06/26</strong>
+            </p>
+            <a href="https://forms.gle/Tn3hfTAVQGtHrArx6" target="_blank" class="btn">Заполнить анкету</a>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ 8: ФУТЕР -->
+    <section class="footer">
+        <div class="container">
+            <div class="footer-names serif">11.07.2026 - 12.07.2026</div>
+            <p class="footer-text">
+                До скорой встречи! <br>
+                С любовью, Евгений и Анастасия!
+            </p>
+         
+        </div>
+    </section>
+
+    <script>
+	
+// НАДЕЖНЫЙ ВАРИАНТ - показывает конверт КАЖДЫЙ РАЗ
+document.addEventListener('DOMContentLoaded', function() {
+    // Элементы
+    const envelope = document.getElementById('envelope');
+    const envelopeOverlay = document.getElementById('envelope-overlay');
+    
+    // Гарантированно показываем конверт
+    if (envelopeOverlay) {
+        envelopeOverlay.style.display = 'flex';
+        envelopeOverlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        
+        // Сбрасываем состояние конверта
+        if (envelope) {
+            envelope.classList.remove('open');
+        }
+        
+        // Сбрасываем инструкцию
+        const instruction = document.querySelector('.instruction');
+        if (instruction) {
+            instruction.textContent = 'Нажмите на конверт, чтобы открыть';
+            instruction.style.animation = 'fadeInOut 2s infinite';
+        }
+    }
+    
+    // Открытие конверта по клику
+    envelope?.addEventListener('click', function() {
+        if (!this.classList.contains('open')) {
+            this.classList.add('open');
+            
+            const instruction = document.querySelector('.instruction');
+            if (instruction) {
+                instruction.textContent = 'Приглашение открыто!';
+                instruction.style.animation = 'none';
+            }
+        }
+    });
+    
+    // Кнопка "Открыть приглашение"
+    document.getElementById('openInvitation')?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        // Плавное скрытие конверта
+        envelopeOverlay.classList.add('hidden');
+        
+        setTimeout(() => {
+            envelopeOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }, 800);
+    });
+    
+    // На случай, если элементы не были найдены сразу
+    setTimeout(() => {
+        if (!envelope || !envelopeOverlay) {
+            console.warn('Элементы конверта не найдены, показываем сайт напрямую');
+            document.body.style.overflow = 'auto';
+            if (envelopeOverlay) envelopeOverlay.style.display = 'none';
+        }
+    }, 1000);
+});
+        // ТАЙМЕР ОБРАТНОГО ОТСЧЕТА
+        function updateCountdown() {
+            const weddingDate = new Date('2026-07-11T16:00:00').getTime();
+            const now = new Date().getTime();
+            const timeLeft = weddingDate - now;
+
+            if (timeLeft < 0) {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(3, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // ПЛАВНАЯ ПРОКРУТКА
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
