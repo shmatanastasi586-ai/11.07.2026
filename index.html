@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Евгений и Анастасия | 11.07.26</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,18 +32,17 @@
 
 .envelope-container {
     text-align: center;
-    max-width: 500px;
-    padding: 20px;
+    max-width: 400px;
+  width: 100%;
 }
 
 /* ЗАКРЫТЫЙ КОНВЕРТ */
 .envelope-closed {
     position: relative;
-    width: 300px;
-    height: 200px;
-    margin: 0 auto;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+    width: 280px;
+    height: 180px;
+    margin: 0 auto 30px;
+    cursor: default;
 }
 
 .envelope-closed:hover {
@@ -63,51 +62,56 @@
     left: 0;
     width: 0;
     height: 0;
-    border-left: 150px solid transparent;
-    border-right: 150px solid transparent;
-    border-bottom: 100px solid var(--color-olive-dark);
+      border-left: 140px solid transparent !important;
+        border-right: 140px solid transparent !important;
+        border-bottom: 70px solid var(--color-olive-dark) !important;
     border-top: 0;
     z-index: 2;
-    transform-origin: top center;
-    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 	filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
 }
 
 /* Тело конверта */
 .body {
     position: absolute;
-	 top: 100px; /* Чуть перекрываем треугольник */
-    left: 20px;
+    left: 0px;
     bottom: 0;
     left: 0;
-    width: 100%;;
-    height: 140px;
+   width: 100% !important;
+    height: 110px !important;
+    top: 70px !important;
     background: var(--color-olive);
     border-radius: 0 0 8px 8px;
     z-index: 1;
     box-shadow: 0 5px 20px rgba(107, 142, 35, 0.3);
+	 flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Сердечко */
 .heart {
     position: absolute;
-    top: 130px;
+   top: -5px !important;
+   font-size: 2rem !important;
+   font-size: 1.8rem;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 2.5rem;
     color: rgba(255, 255, 255, 0.9);
-    z-index: 2;
+    z-index: 3;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     animation: heartbeat 1.5s infinite ease-in-out;
 }
 
 /* Адрес на конверте */
+
 .address {
     position: absolute;
     bottom: 0px;
-    left: 0;
-    width: 100%;
-    text-align: center;
+    width: 100% !important;
+        left: 0 !important;
+        transform: none !important;
+        padding: 0 15px !important;
+        text-align: center !important;
     color: white;
     z-index: 2;
     font-family: 'Cormorant Garamond', serif;
@@ -116,22 +120,60 @@
 }
 
 .to {
-    font-size: 1.2rem;
-    margin-bottom: 5px;
+    font-size: 1rem !important;
+   margin-bottom: 3px !important;
     opacity: 0.95;
 }
 
 .names {
-    font-size: 2rem;
+      font-size: 1.6rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 8px !important;
     font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 .date {
-    font-size: 1.4rem;
+   font-size: 1.2rem !important;
+    letter-spacing: 0.5px !important;
+   margin-bottom: 3px !important;
     opacity: 0.95;
+	font-weight: 400;
 }
+.envelope-text {
+    margin-top: 30px;
+}
+
+.envelope-text p {
+    color: var(--color-olive);
+    font-size: 1rem;
+    margin-bottom: 20px;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.open-btn {
+    background: var(--color-olive);
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 300;
+    min-width: 150px;
+}
+
+.open-btn:hover {
+    background: var(--color-olive-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(107, 142, 35, 0.3);
+}
+
 
 /* ОТКРЫТЫЙ КОНВЕРТ */
 .envelope-opened {
@@ -334,10 +376,10 @@
 }
 
 /* АДАПТИВНОСТЬ */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .envelope-closed {
-        width: 250px;
-        height: 170px;
+        width: 250px !important;
+        height: 170px !important;
     }
     
     .flap {
@@ -967,7 +1009,8 @@
     align-items: center; /* Выравнивание по центру */
   }
 		.polaroid {
-    width: 550px;
+     width: 300px !important;
+        max-width: 90vw !important;
     background-color: white;
     padding: 15px 15px 30px 15px; /* Отступы, нижний больше */
     border: 1px solid #ccc;
@@ -1354,6 +1397,139 @@
             .countdown-item { min-width: 110px; }
             .btn { padding: 15px 35px; }
         }
+		
+		/* 2. АДАПТИВНОСТЬ ПОЛЯРОИДОВ */
+@media (max-width: 480px) {
+    .polaroid-wrapper {
+        flex-direction: column !important;
+        gap: 40px !important;
+    }
+    
+    .polaroid {
+        width: 300px !important;
+  
+    }
+    
+    .hero-date {
+        font-size: 3rem !important;
+        letter-spacing: 8px !important;
+        margin: 20px 0 !important;
+    }
+    
+    .hero-names {
+        font-size: 2.5rem !important;
+        margin-top: 40px !important;
+    }
+}
+
+/* 3. АДАПТИВНОСТЬ КАРТЫ */
+.map-wrapper iframe {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 400px !important;
+}
+
+@media (max-width: 768px) {
+    .map-wrapper iframe {
+        height: 300px !important;
+    }
+    
+    .location-details {
+        padding: 0 15px !important;
+    }
+}
+
+/* 4. АДАПТИВНОСТЬ ТАЙМЕРА */
+@media (max-width: 768px) {
+    .countdown-container {
+        gap: 20px !important;
+    }
+    
+    .countdown-item {
+        min-width: 80px !important;
+    }
+    
+    .countdown-number {
+        font-size: 2.5rem !important;
+    }
+    
+    .countdown-label {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* 5. АДАПТИВНОСТЬ ПРОСЬБ */
+@media (max-width: 768px) {
+    .requests-grid {
+        grid-template-columns: 1fr !important;
+        padding: 0 15px !important;
+    }
+    
+    .request-card {
+        padding: 20px 15px !important;
+    }
+}
+
+/* 6. ОБЩИЕ ПРАВКИ ДЛЯ МОБИЛЬНЫХ */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px !important;
+    }
+    
+    section {
+        padding: 60px 0 !important;
+    }
+    
+    h2.serif {
+        font-size: 2.2rem !important;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    .calendar-table {
+        font-size: 1rem !important;
+    }
+    
+    .highlight-date {
+        font-size: 1.8rem !important;
+    }
+}
+
+/* 7. ДОПОЛНИТЕЛЬНО ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ */
+@media (max-width: 480px) {
+    .hero-suptitle {
+        font-size: 0.8rem !important;
+        letter-spacing: 4px !important;
+    }
+    
+    .hero-quote {
+        font-size: 1.2rem !important;
+        margin: 30px auto !important;
+        padding: 0 10px !important;
+    }
+    
+    .btn {
+        padding: 15px 30px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .timeline-elegant::before {
+        left: 40px !important;
+    }
+    
+    .time-circle {
+        width: 70px !important;
+        height: 70px !important;
+        margin-right: 15px !important;
+    }
+    
+    .event-title {
+        font-size: 1.2rem !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -1365,16 +1541,23 @@
             <div class="envelope-closed">
                 <div class="envelope-front">
                     <div class="flap"></div>
-                    <div class="body"></div>
+                    <div class="body">
                     <div class="heart">❤</div>
                     <div class="address">
-                        <div class="to">Дорогим гостям</div>
                         <div class="names">Евгений и Анастасия</div>
                         <div class="date">11.07.2026 — 12.07.2026</div>
                     </div>
                 </div>
             </div>
-            
+             </div>
+			 
+			  <div class="envelope-text">
+            <button class="open-btn" id="openInvitation">
+                Открыть
+            </button>
+        </div>
+    </div>
+</div>
             <!-- Конверт открытый -->
             <div class="envelope-opened">
                 <div class="letter">
@@ -1627,7 +1810,7 @@
    
     </div>
         <div class="countdown-container">
-            <h1 class="serif">До нашей свадьбы осталось</h1>
+            <h2 class="serif">До нашей свадьбы осталось</h2>
             <div class="countdown-container">
                 <div class="countdown-item"><div class="countdown-number" id="days">167</div><div class="countdown-label">Дней</div></div>
                 <div class="countdown-item"><div class="countdown-number" id="hours">05</div><div class="countdown-label">Часов</div></div>
@@ -1758,7 +1941,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Открытие конверта по клику
-    envelope?.addEventListener('click', function() {
+    envelopeOverlay?.addEventListener('click', function() {
         if (!this.classList.contains('open')) {
             this.classList.add('open');
             
