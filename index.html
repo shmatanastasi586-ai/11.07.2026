@@ -23,6 +23,8 @@
     z-index: 9999;
     transition: opacity 0.8s ease, visibility 0.8s ease;
     font-family: 'Montserrat', sans-serif;
+	padding: 20px;
+    box-sizing: border-box;
 }
 
 .envelope-overlay.hidden {
@@ -34,13 +36,14 @@
     text-align: center;
     max-width: 400px;
   width: 100%;
+  padding: 20px; /* Добавить отступы */
 }
 
 /* ЗАКРЫТЫЙ КОНВЕРТ */
 .envelope-closed {
     position: relative;
-    width: 280px;
-    height: 180px;
+    width: 250px;
+    height: 160px;
     margin: 0 auto 30px;
     cursor: default;
 }
@@ -60,11 +63,11 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 0;
     height: 0;
-      border-left: 140px solid transparent !important;
-        border-right: 140px solid transparent !important;
-        border-bottom: 70px solid var(--color-olive-dark) !important;
+      border-left: 125px solid transparent !important;
+        border-right: 125px solid transparent !important;
+        border-bottom: 60px solid var(--color-olive-dark) !important;
     border-top: 0;
     z-index: 2;
 	filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.1));
@@ -73,16 +76,16 @@
 /* Тело конверта */
 .body {
     position: absolute;
-    left: 0px;
     bottom: 0;
     left: 0;
    width: 100% !important;
     height: 110px !important;
-    top: 70px !important;
+    top: 60px !important;
     background: var(--color-olive);
     border-radius: 0 0 8px 8px;
     z-index: 1;
     box-shadow: 0 5px 20px rgba(107, 142, 35, 0.3);
+	display: flex;
 	 flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -91,9 +94,8 @@
 /* Сердечко */
 .heart {
     position: absolute;
-   top: -10px !important;
-   font-size: 2rem !important;
-   font-size: 1.8rem;
+   top: -12px !important;
+   font-size: 1.5rem !important;
     left: 50%;
     transform: translateX(-50%);
     color: rgba(255, 255, 255, 0.9);
@@ -126,7 +128,7 @@
 }
 
 .names {
-      font-size: 1.6rem !important;
+      font-size: 1.4rem !important;
         line-height: 1.2 !important;
         margin-bottom: 8px !important;
     font-weight: 600;
@@ -134,7 +136,7 @@
 }
 
 .date {
-   font-size: 1.2rem !important;
+   font-size: 1rem !important;
     letter-spacing: 0.5px !important;
    margin-bottom: 3px !important;
     opacity: 0.95;
@@ -376,36 +378,47 @@
 }
 
 /* АДАПТИВНОСТЬ */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .envelope-closed {
-        width: 250px !important;
-        height: 170px !important;
+        width: 220px;
+        height: 140px;
     }
     
     .flap {
-        border-left: 125px solid transparent;
-        border-right: 125px solid transparent;
-        border-bottom: 85px solid var(--color-olive-dark);
+        border-left: 110px solid transparent;
+        border-right: 110px solid transparent;
+        border-bottom: 50px solid var(--color-olive-dark);
     }
     
-    .body {
-        width: 250px;
-        height: 120px;
+   .body {
+        top: 50px;
+        height: 90px;
     }
     
     .heart {
-        top: 50px;
-        font-size: 2.5rem;
+        font-size: 1.3rem;
+        top: -10px;
     }
     
     .names {
-        font-size: 1.6rem;
-    }
-    
-    .date {
         font-size: 1.2rem;
     }
     
+    .date {
+        font-size: 0.9rem;
+    }
+    
+	.envelope-text p {
+        font-size: 0.9rem;
+    }
+    
+    .open-btn {
+        padding: 10px 35px;
+        font-size: 0.9rem;
+    }
+}
+
+	
     .letter {
         padding: 25px 20px;
         max-width: 280px;
@@ -418,6 +431,47 @@
     .instruction {
         font-size: 1rem;
     }
+	
+	@media (max-width: 480px) {
+    .envelope-closed {
+        width: 200px;
+        height: 130px;
+    }
+    
+    .flap {
+        border-left: 100px solid transparent;
+        border-right: 100px solid transparent;
+        border-top: 45px solid var(--color-olive-dark);
+    }
+    
+    .body {
+        top: 45px;
+        height: 85px;
+    }
+    
+    .heart {
+        font-size: 1.2rem;
+        top: -8px;
+    }
+    
+    .names {
+        font-size: 1.1rem;
+        line-height: 1.2;
+    }
+	
+	 .date {
+        font-size: 0.85rem;
+    }
+    
+    .envelope-text p {
+        font-size: 0.85rem;
+        padding: 0 10px;
+    }
+}
+.container {
+    max-width: 100%;
+    overflow: hidden;
+}
 }
         
         /* ГЛАВНАЯ СЕКЦИЯ */
