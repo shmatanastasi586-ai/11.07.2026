@@ -49,7 +49,15 @@
 .envelope-closed:hover {
     transform: scale(1.05);
 }
+.envelope-opened {
+    display: none; /* Скрыто по умолчанию */
+}
 
+.envelope.open .envelope-closed {
+    transform: translateY(-100px);
+    opacity: 0;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+}
 .envelope-front {
     position: relative;
     width: 100%;
@@ -175,6 +183,14 @@
     background: var(--color-olive-dark);
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(107, 142, 35, 0.3);
+}
+.open-btn, .open-invitation-btn {
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.open-btn:hover, .open-invitation-btn:hover {
+    transform: scale(1.05);
 }
 
 
@@ -396,6 +412,7 @@
         width: 250px !important;
         height: 170px !important;
     }
+	}
     
     .flap {
         border-left: 125px solid transparent;
@@ -1559,22 +1576,22 @@
                 <div class="envelope-front">
                     <div class="flap"></div>
                     <div class="body">
-                    <div class="heart">❤</div>
-                    <div class="address">
-                        <div class="names">Евгений и Анастасия</div>
-                        <div class="date">11.07.2026 — 12.07.2026</div>
+                        <div class="heart">❤</div>
+                        <div class="address">
+                            <div class="names">Евгений и Анастасия</div>
+                            <div class="date">11.07.2026 — 12.07.2026</div>
+                        </div>
                     </div>
                 </div>
             </div>
-             </div>
-			 
-			  <div class="envelope-text">
-            <button class="open-btn" id="openInvitation">
-                Открыть
-            </button>
-        </div>
-    </div>
-</div>
+            
+            <!-- Кнопка Открыть (в закрытом конверте) -->
+            <div class="envelope-text">
+                <button class="open-btn" id="openInvit">
+                    Открыть
+                </button>
+            </div>
+
             <!-- Конверт открытый -->
             <div class="envelope-opened">
                 <div class="letter">
@@ -1589,7 +1606,6 @@
                 </div>
             </div>
         </div>
-      
     </div>
 </div>
     <!-- СЕКЦИЯ 1: ГЛАВНАЯ -->
@@ -1932,65 +1948,62 @@
 
     <script>
 	
+
+
 // НАДЕЖНЫЙ ВАРИАНТ - показывает конверт КАЖДЫЙ РАЗ
 document.addEventListener('DOMContentLoaded', function() {
-    // Элементы
-    const envelope = document.getElementById('envelope');
+    // Получаем элементы
     const envelopeOverlay = document.getElementById('envelope-overlay');
+    const envelope = document.getElementById('envelope');
+    const openBtn = document.getElementById('openInvit');
+    const openInvitationBtn = document.getElementById('openInvitation');
+    const closedEnvelope = document.querySelector('.envelope-closed');
+    const openedEnvelope = document.querySelector('.envelope-opened');
     
-    // Гарантированно показываем конверт
+    // Всегда показываем конверт
     if (envelopeOverlay) {
         envelopeOverlay.style.display = 'flex';
-        envelopeOverlay.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-        
-        // Сбрасываем состояние конверта
-        if (envelope) {
-            envelope.classList.remove('open');
-        }
-        
-        // Сбрасываем инструкцию
-        const instruction = document.querySelector('.instruction');
-        if (instruction) {
-            instruction.textContent = 'Нажмите на конверт, чтобы открыть';
-            instruction.style.animation = 'fadeInOut 2s infinite';
-        }
     }
     
-    // Открытие конверта по клику
-    envelope?.addEventListener('click', function() {
-        if (!this.classList.contains('open')) {
-            this.classList.add('open');
+    // Скрываем открытую часть конверта изначально
+    if (openedEnvelope) {
+        openedEnvelope.style.display = 'none';
+    }
+    
+    // 1. Кнопка "Открыть" - открываем конверт
+    if (openBtn) {
+        openBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            const instruction = document.querySelector('.instruction');
-            if (instruction) {
-                instruction.textContent = 'Приглашение открыто!';
-                instruction.style.animation = 'none';
+          if (!this.classList.contains('open')) {
+            this.classList.add('open');}
+            
+            setTimeout(() => {
+                if (closedEnvelope) closedEnvelope.style.display = 'none';
+                if (openedEnvelope) openedEnvelope.style.display = 'block';
+                if (openBtn) openBtn.style.display = 'none';
+            }, 600);
+        });
+    }
+
+    // 2. Кнопка "Открыть приглашение" - закрываем конверт
+    if (openInvitationBtn) {
+        openInvitationBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (envelopeOverlay) {
+                envelopeOverlay.classList.add('hidden');
+                
+                setTimeout(() => {
+                    envelopeOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 800);
             }
-        }
-    });
-    
-    // Кнопка "Открыть приглашение"
-    document.getElementById('openInvitation')?.addEventListener('click', function(e) {
-        e.stopPropagation();
-        
-        // Плавное скрытие конверта
-        envelopeOverlay.classList.add('hidden');
-        
-        setTimeout(() => {
-            envelopeOverlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }, 800);
-    });
-    
-    // На случай, если элементы не были найдены сразу
-    setTimeout(() => {
-        if (!envelope || !envelopeOverlay) {
-            console.warn('Элементы конверта не найдены, показываем сайт напрямую');
-            document.body.style.overflow = 'auto';
-            if (envelopeOverlay) envelopeOverlay.style.display = 'none';
-        }
-    }, 1000);
+        });
+    }
 });
         // ТАЙМЕР ОБРАТНОГО ОТСЧЕТА
         function updateCountdown() {
