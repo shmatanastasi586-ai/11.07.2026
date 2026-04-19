@@ -1564,6 +1564,22 @@
         font-size: 1.2rem !important;
     }
 }
+		/* СТИЛИ ДЛЯ АНИМАЦИИ ПРИ ПРОКРУТКЕ */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Небольшая задержка для элементов внутри сетки, чтобы они появлялись по очереди */
+        .gallery-item, .request-card, .timeline-item-elegant {
+            transition-delay: 0.1s;
+        }
     </style>
 </head>
 <body>
@@ -1928,9 +1944,9 @@
         
             <p class="rsvp-deadline">
                 Пожалуйста, подтвердите своё присутствие на мероприятии до:<br>
-                <strong>16/06/26</strong>
+                <strong>01/06/26</strong>
             </p>
-            <a href="https://forms.gle/Tn3hfTAVQGtHrArx6" target="_blank" class="btn">Заполнить анкету</a>
+            <a href="https://forms.gle/p6q5yFiiL41J1jHT6"  target="_blank" class="btn">Заполнить анкету</a>
         </div>
     </section>
 
@@ -2048,6 +2064,60 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             });
+        });
+		// ПЛАВНОЕ ПОЯВЛЕНИЕ ЭЛЕМЕНТОВ ПРИ ПРОКРУТКЕ
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Выбираем все элементы, которые хотим анимировать
+            const animatedElements = document.querySelectorAll(
+                '.hero-content, .gallery-item, .calendar, .location, .elegant-timing, ' +
+                '.countdown-section, .requests-section, .rsvp, .footer'
+            );
+
+            // Создаем наблюдатель
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Если элемент появляется в области видимости
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Можно прекратить наблюдение за этим элементом, чтобы сэкономить ресурсы
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15, // Элемент считается видимым, когда 15% его площади на экране
+                rootMargin: "0px 0px -50px 0px" // Небольшой отступ снизу для более плавного старта
+            });
+
+            // Добавляем базовый класс и начинаем наблюдение за каждым элементом
+            animatedElements.forEach(el => {
+                el.classList.add('fade-up');
+                observer.observe(el);
+            });
+
+            // Особый случай для таймлайна, чтобы его пункты тоже анимировались
+            const timelineItems = document.querySelectorAll('.timeline-item-elegant');
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        timelineObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            timelineItems.forEach(item => {
+                // Для таймлайна не нужно добавлять fade-up, так как у него уже своя анимация,
+                // просто активируем видимость, чтобы запустить его встроенную анимацию с задержкой.
+                // Но добавим класс для управления видимостью
+                item.classList.add('fade-up');
+                timelineObserver.observe(item);
+            });
+            
+            // Немедленно проверяем видимые элементы при загрузке
+            setTimeout(() => {
+                window.dispatchEvent(new Event('scroll'));
+            }, 300);
         });
     </script>
 </body>
